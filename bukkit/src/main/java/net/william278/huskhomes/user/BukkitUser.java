@@ -26,6 +26,7 @@ import net.william278.huskhomes.position.Location;
 import net.william278.huskhomes.position.Position;
 import net.william278.huskhomes.teleport.TeleportationException;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.metadata.MetadataValue;
@@ -34,6 +35,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -122,18 +125,30 @@ public class BukkitUser extends OnlineUser {
             throw new TeleportationException(TeleportationException.Type.ILLEGAL_TARGET_COORDINATES, plugin);
         }
 
-        // Run on the appropriate thread scheduler for this platform
+        // 请在该平台的相应线程调度器上运行
         plugin.runSync(() -> {
             bukkitPlayer.leaveVehicle();
             bukkitPlayer.eject();
-            bukkitPlayer.setFallDistance(0f);
             if (async || ((BukkitHuskHomes) plugin).getScheduler().isUsingFolia()) {
-                PaperLib.teleportAsync(bukkitPlayer, location, PlayerTeleportEvent.TeleportCause.PLUGIN);
-                return;
+
+                try {
+                    Method teleportAsync = Entity.class.getDeclaredMethod("teleportAsync", org.bukkit.Location.class, PlayerTeleportEvent.TeleportCause.class);
+                    if (teleportAsync != null) {
+                        teleportAsync.invoke(bukkitPlayer, location, PlayerTeleportEvent.TeleportCause.PLUGIN);
+                    }
+                    return;
+                } catch (NoSuchMethodException e) {
+                    throw new RuntimeException(e);
+                } catch (InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
             }
             bukkitPlayer.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
         }, this);
     }
+
 
     @Override
     public boolean isMoving() {

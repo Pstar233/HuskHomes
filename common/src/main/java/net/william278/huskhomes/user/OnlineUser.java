@@ -115,7 +115,7 @@ public abstract class OnlineUser extends User implements Teleportable, CommandUs
 
 
     /**
-     * Dispatch a MineDown-formatted chat message to this player.
+     * 给这位播放器发送一条MineDown格式的聊天消息。
      *
      * @param mineDown the parsed {@link MineDown} to send
      */

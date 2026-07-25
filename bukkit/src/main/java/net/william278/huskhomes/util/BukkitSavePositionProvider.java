@@ -22,10 +22,7 @@ package net.william278.huskhomes.util;
 import io.papermc.lib.PaperLib;
 import net.william278.huskhomes.BukkitHuskHomes;
 import net.william278.huskhomes.position.Location;
-import org.bukkit.Chunk;
-import org.bukkit.ChunkSnapshot;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -46,14 +43,14 @@ public interface BukkitSavePositionProvider extends SavePositionProvider {
         }
 
         // Search nearby blocks for a safe location
-        return PaperLib.getChunkAtAsync(bukkitLocation)
-                .thenApply(Chunk::getChunkSnapshot)
+        return bukkitLocation.getWorld().getChunkAtAsync(bukkitLocation).thenApply(Chunk::getChunkSnapshot)
                 .thenApply(snapshot -> findSafeLocationNear(
                         location,
                         snapshot,
                         getMinHeight(bukkitLocation.getWorld()),
                         getMaxHeight(bukkitLocation.getWorld())
                 ));
+
     }
 
     /**

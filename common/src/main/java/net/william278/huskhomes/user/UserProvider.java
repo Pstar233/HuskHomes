@@ -54,9 +54,19 @@ public interface UserProvider {
 
     @NotNull
     default List<User> getUserList() {
+        final List<User> globalUsers = getGlobalUserList().values().stream()
+                .flatMap(Collection::stream)
+                .toList();
+        final List<OnlineUser> onlineUsers = new ArrayList<>(getOnlineUsers());
+        
         return Stream.concat(
-                getGlobalUserList().values().stream().flatMap(Collection::stream),
-                getOnlineUsers().stream().filter(o -> !o.isVanished())
+                globalUsers.stream(),
+                onlineUsers.stream().filter(o -> {
+                    if (o != null) {
+                        return !o.isVanished();
+                    }
+                    return false;
+                })
         ).distinct().sorted().toList();
     }
 

@@ -22,6 +22,7 @@ package net.william278.huskhomes.util;
 import net.william278.huskhomes.BukkitHuskHomes;
 import net.william278.huskhomes.HuskHomes;
 import net.william278.huskhomes.user.OnlineUser;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import space.arim.morepaperlib.scheduling.AsynchronousScheduler;
@@ -181,7 +182,7 @@ public interface BukkitTask extends Task {
 
         @Override
         default void cancelTasks() {
-            ((BukkitHuskHomes) getPlugin()).getScheduler().cancelGlobalTasks();
+            Bukkit.getGlobalRegionScheduler().cancelTasks(((BukkitHuskHomes) getPlugin()));
         }
 
     }
