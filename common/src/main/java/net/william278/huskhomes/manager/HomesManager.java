@@ -21,7 +21,6 @@ package net.william278.huskhomes.manager;
 
 import net.william278.huskhomes.HuskHomes;
 import net.william278.huskhomes.command.ListCommand;
-import net.william278.huskhomes.database.Database;
 import net.william278.huskhomes.network.Message;
 import net.william278.huskhomes.network.Payload;
 import net.william278.huskhomes.position.Home;
@@ -417,23 +416,6 @@ public class HomesManager {
                 plugin.getSettings().getEconomy().getFreeHomeSlots(),
                 plugin.getSettings().getGeneral().isStackPermissionLimits()
         ) : plugin.getSettings().getEconomy().getFreeHomeSlots();
-    }
-
-    /**
-     * 保存所有家庭到数据库中
-     * @param database
-     */
-    public void saveHomes(Database database) {
-
-        userHomes.forEach((username, homes) -> {
-            homes.forEach(home -> {
-                plugin.getDatabase().saveHome(home);
-            });
-        });
-        publicHomes.forEach(home -> {
-            database.saveHome(home);
-        });
-
     }
 
 }
