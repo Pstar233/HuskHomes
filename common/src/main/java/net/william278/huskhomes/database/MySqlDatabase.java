@@ -97,7 +97,8 @@ public class MySqlDatabase extends Database {
                         "prepStmtCacheSqlLimit", "2048",
                         "useServerPrepStmts", "true",
                         "useLocalSessionState", "true",
-                        "useLocalTransactionState", "true"
+                        "useLocalTransactionState", "true",
+                        "characterEncoding", "UTF-8"
                 ));
         properties.putAll(
                 Map.of(
@@ -115,6 +116,9 @@ public class MySqlDatabase extends Database {
     protected void executeScript(@NotNull Connection connection, @NotNull String name) throws SQLException {
         try (Statement statement = connection.createStatement()) {
             for (String schemaStatement : getScript(name)) {
+                if (schemaStatement.isBlank()) {
+                    continue;
+                }
                 statement.execute(schemaStatement);
             }
         }
