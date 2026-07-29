@@ -21,6 +21,7 @@ package net.william278.huskhomes.manager;
 
 import net.william278.huskhomes.HuskHomes;
 import net.william278.huskhomes.command.ListCommand;
+import net.william278.huskhomes.database.Database;
 import net.william278.huskhomes.network.Message;
 import net.william278.huskhomes.network.Payload;
 import net.william278.huskhomes.position.Position;
@@ -241,5 +242,7 @@ public class WarpsManager {
         plugin.getDatabase().saveWarp(warp);
         this.cacheWarp(warp, true);
     }
-
+    public void saveWarps(Database database) {
+        this.warps.forEach((warp) -> database.saveWarp(warp));
+    }
 }

@@ -320,6 +320,8 @@ public class BukkitHuskHomes extends JavaPlugin implements HuskHomes, BukkitTask
     @Override
     public void closeDatabase() {
         if (database != null) {
+            this.manager.homes().saveHomes(this.database);
+            this.manager.warps().saveWarps(this.database);
             database.close();
         }
     }

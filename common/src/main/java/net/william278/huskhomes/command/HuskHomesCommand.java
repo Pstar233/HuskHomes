@@ -30,6 +30,8 @@ import net.william278.desertwell.about.AboutMenu;
 import net.william278.desertwell.util.UpdateChecker;
 import net.william278.huskhomes.HuskHomes;
 import net.william278.huskhomes.config.Locales;
+import net.william278.huskhomes.database.Database;
+import net.william278.huskhomes.database.SqLiteDatabase;
 import net.william278.huskhomes.hook.PluginHook;
 import net.william278.huskhomes.importer.Importer;
 import net.william278.huskhomes.position.Home;
@@ -57,7 +59,8 @@ public class HuskHomesCommand extends Command implements UserListTabCompletable 
             "homeslots", true,
             "import", true,
             "delete", true,
-            "update", true
+            "update", true,
+            "migrate", true
     );
 
     private final UpdateChecker updateChecker;
@@ -195,6 +198,15 @@ public class HuskHomesCommand extends Command implements UserListTabCompletable 
                 plugin.getLocales().getLocale("update_available", checked.getLatestVersion().toString(),
                         plugin.getPluginVersion().toString()).ifPresent(executor::sendMessage);
             });
+            case "migrate" -> this.plugin.runAsync(() -> {
+                    Database.Type type = this.getPlugin().getSettings().getDatabase().getType();
+                    if (type == Database.Type.MYSQL) {
+                        SqLiteDatabase sqLiteDatabase = new SqLiteDatabase(this.getPlugin());
+                        sqLiteDatabase.initialize();
+                        Database database = this.plugin.getDatabase();
+                        sqLiteDatabase.migrateData(database);
+                    }
+                });
             default -> plugin.getLocales().getLocale("error_invalid_syntax", getUsage())
                     .ifPresent(executor::sendMessage);
         }

@@ -1419,7 +1419,7 @@ public class SqLiteDatabase extends Database {
     }
 
     /**
-     * 检查 Home 的 name/description 是否含非 BMP 字符（emoji）
+     * 检查 Home 的 name/description 是否含非 BMP 字符
      */
     private boolean hasNonBmp(@NotNull Home home) {
         return hasNonBmp(home.getMeta().getName())
