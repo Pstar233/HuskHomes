@@ -117,10 +117,10 @@ public abstract class OnlineUser extends User implements Teleportable, CommandUs
     /**
      * 给这位播放器发送一条MineDown格式的聊天消息。
      *
-     * @param mineDown the parsed {@link MineDown} to send
+     * @param component the parsed {@link MineDown} to send
      */
-    public void sendMessage(@NotNull MineDown mineDown) {
-        getAudience().sendMessage(mineDown.toComponent());
+    public void sendMessage(@NotNull Component component) {
+        getAudience().sendMessage(component);
     }
 
     /**

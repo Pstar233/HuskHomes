@@ -21,6 +21,7 @@ package net.william278.huskhomes.config;
 
 import com.google.common.collect.Maps;
 import de.exlll.configlib.Configuration;
+import de.themoep.minedown.adventure.MineDown;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import net.kyori.adventure.text.Component;
@@ -93,7 +94,7 @@ public class Locales {
      * @param localeId String identifier of the locale, corresponding to a key in the file
      * @return An {@link Optional} containing the formatted locale corresponding to the id, if it exists
      */
-    public Optional<Component> getLocale(@NotNull String localeId) {
+    public Optional<MineDown> getLocale(@NotNull String localeId) {
         return getRawLocale(localeId).map(this::format);
     }
 
@@ -106,7 +107,7 @@ public class Locales {
      * @param replacements Ordered array of replacement strings to fill in placeholders with
      * @return An {@link Optional} containing the replacement-applied, formatted locale corresponding to the id
      */
-    public Optional<Component> getLocale(@NotNull String localeId, @NotNull String... replacements) {
+    public Optional<MineDown> getLocale(@NotNull String localeId, @NotNull String... replacements) {
         return getRawLocale(localeId, Arrays.stream(replacements).map(Locales::escapeText)
                 .toArray(String[]::new)).map(this::format);
     }
@@ -118,8 +119,8 @@ public class Locales {
      * @return A {@link Component} containing the formatted text
      */
     @NotNull
-    public Component format(@NotNull String text) {
-        return MINI_MESSAGE.deserialize(text);
+    public MineDown format(@NotNull String text) {
+        return new MineDown(text);
     }
 
     /**

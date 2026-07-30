@@ -75,6 +75,7 @@ import space.arim.morepaperlib.scheduling.RegionalScheduler;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 @Getter
@@ -91,7 +92,7 @@ public class BukkitHuskHomes extends JavaPlugin implements HuskHomes, BukkitTask
     private final Set<SavedUser> savedUsers = Sets.newHashSet();
     private final Set<UUID> currentlyOnWarmup = Sets.newConcurrentHashSet();
     private final Set<UUID> warmupDamagedUsers = Sets.newConcurrentHashSet();
-    private final Map<UUID, OnlineUser> onlineUserMap = Maps.newHashMap();
+    private final Map<UUID, OnlineUser> onlineUserMap = Maps.newConcurrentMap();
     private final Map<String, List<User>> globalUserList = Maps.newConcurrentMap();
     private final List<Command> commands = Lists.newArrayList();
 
